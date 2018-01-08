@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Evently</string>
+
+    <string name="settings_file">EVENTLY_PREFS</string>
+    <string name="token_key">TOKEN</string>
+    <string name="uid_key">UID</string>
+
+    <string name="progress_loading">Loading...</string>
+
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="btn_day_one">DAY ONE</string>
+    <string name="btn_day_two">DAY TWO</string>
+    <string name="btn_day_three">DAY THREE</string>
+    <string name="btn_register">Register</string>
+
+    <string name="text_login">Sign In</string>
+    <string name="text_register">Register</string>
+    <string name="text_time">16:00-17:00</string>
+    <string name="text_event">Event Name</string>
+    <string name="text_event_description">Some Description</string>
+    <string name="text_price">50</string>
+
+    <string name="currency_rupee">₹</string>
+
+    <string name="toast_login_failed">Something went wrong!</string>
+
+    <string name="hint_email">john@example.com</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_roll_no">Roll Number</string>
+
+    <string name="signup_helper">Not a member? Sign Up Here</string>
+
+    <string name="branch_prompt">Select your branch</string>
+    <string-array name="branch_array">
+        <item>Computer Engineering</item>
+        <item>Mechanical Engineering</item>
+        <item>Eelectrical Engineering</item>
+        <item>IT Engineering</item>
+        <item>EXTC Engineering</item>
+    </string-array>
+    <string name="semester_prompt">Select your semester</string>
+    <string-array name="semester_array">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
