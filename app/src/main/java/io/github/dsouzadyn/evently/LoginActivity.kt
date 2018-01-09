@@ -7,9 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import com.auth0.jwt.JWT
-import com.auth0.jwt.exceptions.JWTDecodeException
-import com.auth0.jwt.interfaces.DecodedJWT
+import com.auth0.android.jwt.JWT
+
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
@@ -71,19 +70,14 @@ class LoginActivity : AppCompatActivity() {
                         Log.d(APP_TAG, token?.data)
                         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
-                        try {
-                            val jwt = JWT.decode(token?.data);
-                            editor.putString(getString(R.string.token_key), token?.data)
-                            editor.putString(getString(R.string.uid_key), jwt.subject)
-                            editor.apply()
-                            progressDialog.dismiss()
-                            onLoginSuccess()
-                        } catch (e: JWTDecodeException) {
-                            progressDialog.dismiss()
-                            onLoginFailed()
-                        }
+                        val jwt = JWT(token!!.data)
+                        editor.putString(getString(R.string.token_key), token.data)
+                        editor.putString(getString(R.string.uid_key), jwt.subject)
+                        editor.apply()
+                        progressDialog.dismiss()
+                        onLoginSuccess()
                     } else {
-                        Log.d(APP_TAG, error.message)
+                        Log.d(APP_TAG, error!!.message)
                         progressDialog.dismiss()
                         onLoginFailed()
                     }
@@ -103,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onLoginSuccess() {
-
+        this.setResult(420)
         loginBtn.isEnabled = true
         this.finish()
     }

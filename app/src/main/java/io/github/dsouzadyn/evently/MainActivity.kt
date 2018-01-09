@@ -24,9 +24,11 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
     private val DAY_TWO = "2"
     private val DAY_THREE = "3"
     private val MY_EVENTS = "4"
+    private val SIGNIN_OK = 420
 
     var events : Events? = null
     var error: FuelError? = null
+
 
     data class Event(val _id: String, val name: String, val description: String, val capacity: Int,
                      val start_time: String, val end_time: String, val price: Float)
@@ -39,6 +41,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
 
     override fun onListFragmentInteraction(item: DayContent.DayItem) {
+        val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+        val uid = sharedPref.getString(getString(R.string.uid_key), "")
         when {
             item.id == DAY_ONE -> {
 //                EventContent.addItem(
@@ -65,7 +69,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1))
+                    navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == DAY_TWO -> {
@@ -89,7 +93,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1))
+                    navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == DAY_THREE -> {
@@ -114,7 +118,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1))
+                    navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == MY_EVENTS -> {
@@ -129,14 +133,47 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val progressDialog = indeterminateProgressDialog("Fetching events...")
+
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val token = sharedPref.getString(getString(R.string.token_key), "")
+
         Log.d("MAIN_ACTIVITY", token)
         if (token == "") {
             val loginIntent = Intent(this, LoginActivity::class.java)
-            startActivity(loginIntent)
+            startActivityForResult(loginIntent, SIGNIN_OK)
         } else {
+            val progressDialog = indeterminateProgressDialog("Fetching events...")
+            FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
+            progressDialog.show()
+            "http://192.168.1.7:3000/api/events".httpGet().responseObject(Events.Deserializer()) { _, _, result ->
+                events = result.component1()
+                error = result.component2()
+                if(error == null) {
+                    progressDialog.dismiss()
+                    for (event in events!!.data) {
+                        Log.d("EVENT", event.name)
+                    }
+                } else {
+                    progressDialog.dismiss()
+                    Log.e("ERROR", error!!.message)
+                }
+            }
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1))
+            transaction.commit()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == SIGNIN_OK) {
+            val progressDialog = indeterminateProgressDialog("Fetching events...")
+            val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+            val token = sharedPref.getString(getString(R.string.token_key), "")
             FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
             progressDialog.show()
             "http://192.168.1.7:3000/api/events".httpGet().responseObject(Events.Deserializer()) { _, _, result ->
@@ -163,6 +200,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         transaction.replace(R.id.fragmentContainer, fragment).addToBackStack("events")
         transaction.commit()
     }
+
+
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {

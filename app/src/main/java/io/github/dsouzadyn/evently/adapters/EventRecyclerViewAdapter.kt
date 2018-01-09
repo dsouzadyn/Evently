@@ -10,10 +10,13 @@ import android.widget.TextView
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
+import io.github.dsouzadyn.evently.MainActivity
 import io.github.dsouzadyn.evently.R
 
 
 import io.github.dsouzadyn.evently.models.EventContent
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.progressDialog
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -35,6 +38,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val context = holder.mView.context
         holder.mItem = mValues[position]
         holder.time.text = getTime(mValues[position].start_time, mValues[position].end_time)
         holder.title.text = mValues[position].name
@@ -46,9 +50,9 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                     .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
                         val (acknowledgement, error) = result
                         if (error == null) {
-                            // TODO show a dialog confirmation
+                            context.alert(acknowledgement!!.data).show()
                         } else {
-                            // TODO show a dialog failed
+                            context.alert(acknowledgement!!.data).show()
                         }
                     }
         }
