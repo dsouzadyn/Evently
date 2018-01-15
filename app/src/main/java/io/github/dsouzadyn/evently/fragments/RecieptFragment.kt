@@ -1,6 +1,5 @@
 package io.github.dsouzadyn.evently.fragments
 
-
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,9 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.dsouzadyn.evently.R
-import io.github.dsouzadyn.evently.adapters.EventRecyclerViewAdapter
+import io.github.dsouzadyn.evently.adapters.RecieptRecyclerViewAdapter
+import io.github.dsouzadyn.evently.database
+import io.github.dsouzadyn.evently.models.Event
+import org.jetbrains.anko.db.classParser
+import org.jetbrains.anko.db.parseList
+import org.jetbrains.anko.db.select
 
-import io.github.dsouzadyn.evently.models.EventContent
 
 /**
  * A fragment representing a list of Items.
@@ -26,24 +29,22 @@ import io.github.dsouzadyn.evently.models.EventContent
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class EventFragment : Fragment() {
+class RecieptFragment : Fragment() {
+
     // TODO: Customize parameters
-    private var mColumnCount = 1
+    private val mColumnCount = 1
     private var mUid = ""
 
+    private var mListener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (arguments != null) {
-            mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
-            mUid = arguments.getString(ARG_UID)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_event_list, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_reciept_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -53,7 +54,13 @@ class EventFragment : Fragment() {
             } else {
                 view.layoutManager = GridLayoutManager(context, mColumnCount)
             }
-            view.adapter = EventRecyclerViewAdapter(EventContent.ITEMS, mUid)
+
+            val events = context.database.use {
+                select(Event.TABLE_NAME).exec { parseList(classParser<Event>()) }
+            }
+            view.adapter = RecieptRecyclerViewAdapter(events, mListener)
+
+            // TODO find a way to display the data
         }
         return view
     }
@@ -66,7 +73,7 @@ class EventFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-
+        mListener = null
     }
 
     /**
@@ -78,15 +85,17 @@ class EventFragment : Fragment() {
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-
-
+    interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        fun onListFragmentInteraction(item: Object)
+    }
     companion object {
         // TODO: Customize parameter argument names
         private val ARG_COLUMN_COUNT = "column-count"
         private val ARG_UID = "uid"
         // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int, uid: String): EventFragment {
-            val fragment = EventFragment()
+        fun newInstance(columnCount: Int, uid: String): RecieptFragment {
+            val fragment = RecieptFragment()
             val args = Bundle()
             args.putInt(ARG_COLUMN_COUNT, columnCount)
             args.putString(ARG_UID, uid)

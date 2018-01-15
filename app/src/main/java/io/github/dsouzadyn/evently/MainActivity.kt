@@ -13,6 +13,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.google.gson.Gson
 import io.github.dsouzadyn.evently.fragments.DayFragment
 import io.github.dsouzadyn.evently.fragments.EventFragment
+import io.github.dsouzadyn.evently.fragments.RecieptFragment
 import io.github.dsouzadyn.evently.models.DayContent
 import io.github.dsouzadyn.evently.models.EventContent
 import org.jetbrains.anko.indeterminateProgressDialog
@@ -122,7 +123,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 }
             }
             item.id == MY_EVENTS -> {
-                // TODO Launch the events fragment
+                // TODO Launch the my events activity
+                navigateToFragment(RecieptFragment.newInstance(1, uid))
             }
             else -> Log.e("ERROR", "Something went wrong")
         }
@@ -150,8 +152,10 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 error = result.component2()
                 if(error == null) {
                     progressDialog.dismiss()
-                    for (event in events!!.data) {
-                        Log.d("EVENT", event.name)
+                    if(events != null) {
+                        for (event in events!!.data) {
+                            Log.d("EVENT", event.name)
+                        }
                     }
                 } else {
                     progressDialog.dismiss()

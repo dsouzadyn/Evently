@@ -1,7 +1,6 @@
 package io.github.dsouzadyn.evently.adapters
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,15 @@ import android.widget.TextView
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
-import io.github.dsouzadyn.evently.MainActivity
 import io.github.dsouzadyn.evently.R
+import io.github.dsouzadyn.evently.database
+
+import io.github.dsouzadyn.evently.models.Event
 
 
 import io.github.dsouzadyn.evently.models.EventContent
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.progressDialog
+import org.jetbrains.anko.db.insert
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -24,6 +25,8 @@ import org.jetbrains.anko.progressDialog
  * TODO: Replace the implementation with code for your data type.
  */
 class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>, private val mUid: String) : RecyclerView.Adapter<EventRecyclerViewAdapter.ViewHolder>() {
+
+
 
     data class Acknowledgement(val data: String) {
         class Deserializer: ResponseDeserializable<Acknowledgement> {
@@ -50,6 +53,15 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                     .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
                         val (acknowledgement, error) = result
                         if (error == null) {
+                            context.database.use {
+                                insert(
+                                        Event.TABLE_NAME,
+                                        Event.COLUMN_ID to mValues[position].id,
+                                        Event.COLUMN_NAME to mValues[position].name,
+                                        Event.COLUMN_PRICE to mValues[position].price,
+                                        Event.COLUMN_UID to mUid
+                                )
+                            }
                             context.alert(acknowledgement!!.data).show()
                         } else {
                             context.alert(acknowledgement!!.data).show()
