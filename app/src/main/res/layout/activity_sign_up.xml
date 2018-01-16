@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context="io.github.dsouzadyn.evently.SignUpActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:paddingTop="16dp">
         <TextView
             android:text="@string/text_register"
@@ -19,28 +19,47 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/signUpName"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/hint_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/signUpEmail"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/signUpPassword"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/signUpRollNumber"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:inputType="number"
             android:hint="@string/hint_roll_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/signUpBranch"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:spinnerMode="dialog"
             android:prompt="@string/branch_prompt"
             android:layout_width="match_parent"
@@ -51,6 +70,8 @@
         <Spinner
             android:id="@+id/signUpSemester"
             android:spinnerMode="dialog"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:prompt="@string/semester_prompt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +81,10 @@
 
         <Button
             android:id="@+id/signUpBtn"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorWhite"
+            android:padding="16dp"
+            android:layout_marginTop="64dp"
             android:layout_width="match_parent"
             android:text="@string/btn_signup"
             android:layout_height="wrap_content" />
