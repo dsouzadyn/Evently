@@ -18,6 +18,8 @@ import io.github.dsouzadyn.evently.models.Event
 import io.github.dsouzadyn.evently.models.EventContent
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.yesButton
 
 /**
  * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
@@ -48,25 +50,30 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         holder.description.text = mValues[position].description
         holder.price.text = mValues[position].price.toString()
         holder.register.setOnClickListener {
-            "http://192.168.1.7:3000/users/$mUid/events".httpPost()
-                    .body("id=${mValues[position].id}")
-                    .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
-                        val (acknowledgement, error) = result
-                        if (error == null) {
-                            context.database.use {
-                                insert(
-                                        Event.TABLE_NAME,
-                                        Event.COLUMN_ID to mValues[position].id,
-                                        Event.COLUMN_NAME to mValues[position].name,
-                                        Event.COLUMN_PRICE to mValues[position].price,
-                                        Event.COLUMN_UID to mUid
-                                )
+            context.alert("Do you wan't to confirm your registration for " + mValues[position].name + " ?", "Confirmation") {
+                yesButton {
+                    "http://192.168.1.7:3000/users/$mUid/events".httpPost()
+                            .body("id=${mValues[position].id}")
+                            .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
+                                val (acknowledgement, error) = result
+                                if (error == null) {
+                                    context.database.use {
+                                        insert(
+                                                Event.TABLE_NAME,
+                                                Event.COLUMN_ID to mValues[position].id,
+                                                Event.COLUMN_NAME to mValues[position].name,
+                                                Event.COLUMN_PRICE to mValues[position].price,
+                                                Event.COLUMN_UID to mUid
+                                        )
+                                    }
+                                    context.alert(acknowledgement!!.data).show()
+                                } else {
+                                    context.alert(acknowledgement!!.data).show()
+                                }
                             }
-                            context.alert(acknowledgement!!.data).show()
-                        } else {
-                            context.alert(acknowledgement!!.data).show()
-                        }
-                    }
+                }
+                noButton {  }
+            }.show()
         }
         holder.mView.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.mItem!!)

@@ -27,9 +27,9 @@ class RecieptRecyclerViewAdapter(var mEvents: List<Event>, private val mListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(mEvents != null) {
-            holder.mItem = mEvents!![position]
-            holder.mIdView.text = mEvents!![position].name
-            holder.mContentView.text = mEvents!![position].id
+            holder.mItem = mEvents[position]
+            holder.mIdView.text = mEvents[position].name
+            holder.mContentView.text = mEvents[position].price.toString();
         }
         holder.mView.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.mItem)

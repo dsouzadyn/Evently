@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,11 @@ import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.adapters.RecieptRecyclerViewAdapter
 import io.github.dsouzadyn.evently.database
 import io.github.dsouzadyn.evently.models.Event
+import kotlinx.android.synthetic.main.fragment_reciept_list.view.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.parseList
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.find
 
 
 /**
@@ -45,20 +48,27 @@ class RecieptFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_reciept_list, container, false)
-
+        val rv = view.recieptList
+        val totalPriceView = view.totalPrice
         // Set the adapter
-        if (view is RecyclerView) {
-            val context = view.getContext()
+        if (rv is RecyclerView) {
+            val context = rv.getContext()
             if (mColumnCount <= 1) {
-                view.layoutManager = LinearLayoutManager(context)
+                rv.layoutManager = LinearLayoutManager(context)
             } else {
-                view.layoutManager = GridLayoutManager(context, mColumnCount)
+                rv.layoutManager = GridLayoutManager(context, mColumnCount)
             }
 
             val events = context.database.use {
                 select(Event.TABLE_NAME).exec { parseList(classParser<Event>()) }
             }
-            view.adapter = RecieptRecyclerViewAdapter(events, mListener)
+            var total = 0.0f
+            for (i in 0 until events.size) {
+                total += events[i].price
+            }
+            totalPriceView.text = total.toString()
+            Log.d("SIZE", events.size.toString())
+            rv.adapter = RecieptRecyclerViewAdapter(events, mListener)
 
             // TODO find a way to display the data
         }
@@ -87,7 +97,7 @@ class RecieptFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Object)
+        fun onListFragmentInteraction(item: Event)
     }
     companion object {
         // TODO: Customize parameter argument names

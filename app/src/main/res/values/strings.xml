@@ -20,6 +20,7 @@
     <string name="text_event">Event Name</string>
     <string name="text_event_description">Some Description</string>
     <string name="text_price">50</string>
+    <string name="text_total">Total</string>
 
     <string name="currency_rupee">₹</string>
 
