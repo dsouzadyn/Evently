@@ -68,7 +68,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                                     }
                                     context.alert(acknowledgement!!.data).show()
                                 } else {
-                                    context.alert(acknowledgement!!.data).show()
+                                    context.alert("Event is full, cannot register!").show()
                                 }
                             }
                 }

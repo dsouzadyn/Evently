@@ -2,10 +2,12 @@ package io.github.dsouzadyn.evently
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.view.View
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.ResponseDeserializable
@@ -19,7 +21,14 @@ import io.github.dsouzadyn.evently.models.EventContent
 import org.jetbrains.anko.indeterminateProgressDialog
 
 
-class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener {
+
+    override fun onFragmentInteraction(uri: Uri) {
+
+    }
+
+
+
 
     private val DAY_ONE = "1"
     private val DAY_TWO = "2"
@@ -163,10 +172,13 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 }
             }
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1))
+            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+            transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
             transaction.commit()
         }
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -194,13 +206,15 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 }
             }
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1))
+            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+            transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
             transaction.commit()
         }
     }
 
-    fun navigateToFragment(fragment: Fragment) {
+    private fun navigateToFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
         transaction.replace(R.id.fragmentContainer, fragment).addToBackStack("events")
         transaction.commit()
     }
