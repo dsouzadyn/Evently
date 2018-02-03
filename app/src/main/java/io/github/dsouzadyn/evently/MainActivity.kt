@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.View
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.ResponseDeserializable
@@ -27,27 +26,24 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
     }
 
-
-
-
     private val DAY_ONE = "1"
     private val DAY_TWO = "2"
     private val DAY_THREE = "3"
     private val MY_EVENTS = "4"
     private val SIGNIN_OK = 420
 
-    var events : Events? = null
+    var events : List<Event>? = null
     var error: FuelError? = null
 
 
-    data class Event(val _id: String, val name: String, val description: String, val capacity: Int,
-                     val start_time: String, val end_time: String, val price: Float)
-
-    data class Events(val data: List<Event>) {
-        class Deserializer: ResponseDeserializable<Events> {
-            override fun deserialize(content: String) = Gson().fromJson(content, Events::class.java)
+    data class Event(val id: String, val name: String, val description: String, val capacity: Int,
+                     val start_time: String, val end_time: String, val price: Float) {
+        class Deserializer: ResponseDeserializable<List<Event>> {
+            override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
         }
     }
+
+
 
 
     override fun onListFragmentInteraction(item: DayContent.DayItem) {
@@ -61,16 +57,16 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 EventContent.ITEM_MAP.clear()
                 var i = 0
                 if (events != null) {
-                    events!!.data.filterIndexed { index, value ->
+                    events?.filterIndexed { index, value ->
                         //val date = LocalDateTime.parse(value.start_time)
                         Log.d("DATE", value.start_time)
-                        value.start_time.contains("2017-02-12")
-                    }.forEach { e ->
+                        value.start_time.contains("2018-02-22")
+                    }?.forEach { e ->
                         Log.d("i", i.toString())
                         EventContent.addItem(
                                 EventContent.createEventItem(
                                         i,
-                                        e._id,
+                                        e.id,
                                         e.name,
                                         e.description,
                                         e.capacity,
@@ -79,22 +75,23 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1, uid))
+                    if(EventContent.ITEMS.size > 0)
+                        navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == DAY_TWO -> {
                 EventContent.ITEMS.clear()
                 var i = 0
                 if (events != null) {
-                    events!!.data.filterIndexed { index, value ->
+                    events?.filterIndexed { index, value ->
                         //val date = LocalDateTime.parse(value.start_time)
                         Log.d("DATE", value.start_time)
-                        value.start_time.contains("2017-02-13")
-                    }.forEach { e ->
+                        value.start_time.contains("2018-02-23")
+                    }?.forEach { e ->
                         EventContent.addItem(
                                 EventContent.createEventItem(
                                         i++,
-                                        e._id,
+                                        e.id,
                                         e.name,
                                         e.description,
                                         e.capacity,
@@ -103,7 +100,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1, uid))
+                    if(EventContent.ITEMS.size > 0)
+                        navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == DAY_THREE -> {
@@ -111,15 +109,15 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 EventContent.ITEMS.clear()
                 var i = 0
                 if (events != null) {
-                    events!!.data.filterIndexed { index, value ->
+                    events?.filterIndexed { index, value ->
 
                         Log.d("DATE", value.start_time)
-                        value.start_time.contains("2017-02-14")
-                    }.forEach { e ->
+                        value.start_time.contains("2018-02-24")
+                    }?.forEach { e ->
                         EventContent.addItem(
                                 EventContent.createEventItem(
                                         i++,
-                                        e._id,
+                                        e.id,
                                         e.name,
                                         e.description,
                                         e.capacity,
@@ -128,7 +126,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                         e.price
                                 ))
                     }
-                    navigateToFragment(EventFragment.newInstance(1, uid))
+                    if (EventContent.ITEMS.size > 0)
+                        navigateToFragment(EventFragment.newInstance(1, uid))
                 }
             }
             item.id == MY_EVENTS -> {
@@ -146,23 +145,23 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         setContentView(R.layout.activity_main)
 
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
-        val token = sharedPref.getString(getString(R.string.token_key), "")
+        val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
 
         Log.d("MAIN_ACTIVITY", token)
-        if (token == "") {
+        if (token == "Bearer ") {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivityForResult(loginIntent, SIGNIN_OK)
         } else {
             val progressDialog = indeterminateProgressDialog("Fetching events...")
             FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
             progressDialog.show()
-            "http://192.168.1.7:3000/api/events".httpGet().responseObject(Events.Deserializer()) { _, _, result ->
+            "http://192.168.1.6:1337/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
                 events = result.component1()
                 error = result.component2()
                 if(error == null) {
                     progressDialog.dismiss()
                     if(events != null) {
-                        for (event in events!!.data) {
+                        for (event in events!!) {
                             Log.d("EVENT", event.name)
                         }
                     }
@@ -189,16 +188,18 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         if(resultCode == SIGNIN_OK) {
             val progressDialog = indeterminateProgressDialog("Fetching events...")
             val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
-            val token = sharedPref.getString(getString(R.string.token_key), "")
+            val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
             FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
             progressDialog.show()
-            "http://192.168.1.7:3000/api/events".httpGet().responseObject(Events.Deserializer()) { _, _, result ->
+            "http://192.168.1.6:1337/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
                 events = result.component1()
                 error = result.component2()
                 if(error == null) {
                     progressDialog.dismiss()
-                    for (event in events!!.data) {
-                        Log.d("EVENT", event.name)
+                    if(events != null) {
+                        for (event in events!!) {
+                            Log.d("EVENT", event.name)
+                        }
                     }
                 } else {
                     progressDialog.dismiss()

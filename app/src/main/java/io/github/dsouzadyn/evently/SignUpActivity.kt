@@ -33,13 +33,15 @@ class SignUpActivity : AppCompatActivity() {
         val branch = signUpBranch.selectedItem.toString()
         val semester = signUpSemester.selectedItem.toString()
         val rollNumber = signUpRollNumber.text.toString()
-        val bodyString = "name=$name&email=$email&password=$password&" +
-                "branch=$branch&semester=$semester&role=P&roll_number=$rollNumber"
-        "http://192.168.1.7:3000/users/".httpPost()
+        val college = signUpCollege.selectedItem.toString()
+        val bodyString = "username=$name&email=$email&password=$password&" +
+                "branch=$branch&semester=$semester&roll_number=$rollNumber&" +
+                "college=$college"
+        "http://192.168.1.6:1337/auth/local/register".httpPost()
                 .body(bodyString)
                 .responseString {_, response, result ->
                     val (_, error) = result
-                    if (error == null && response.statusCode == 201) {
+                    if (error == null) {
                         progressDialog.dismiss()
                         onSignUpSuccess()
                     } else {
@@ -68,6 +70,7 @@ class SignUpActivity : AppCompatActivity() {
         val password = signUpPassword.text.toString()
         val branch = signUpBranch.selectedItem.toString()
         val semester = signUpSemester.selectedItem.toString().toInt()
+        val college = signUpSemester.selectedItem.toString()
 
         if (name.isEmpty() || name.length < 4) {
             valid = false

@@ -1,6 +1,7 @@
 package io.github.dsouzadyn.evently.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -14,11 +15,14 @@ import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.adapters.RecieptRecyclerViewAdapter
 import io.github.dsouzadyn.evently.database
 import io.github.dsouzadyn.evently.models.Event
+import kotlinx.android.synthetic.main.fragment_reciept_list.*
 import kotlinx.android.synthetic.main.fragment_reciept_list.view.*
+import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.parseList
 import org.jetbrains.anko.db.select
 import org.jetbrains.anko.find
+import org.jetbrains.anko.imageBitmap
 
 
 /**
@@ -35,14 +39,17 @@ import org.jetbrains.anko.find
 class RecieptFragment : Fragment() {
 
     // TODO: Customize parameters
-    private val mColumnCount = 1
+    private var mColumnCount = 1
     private var mUid = ""
 
     private var mListener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        if (arguments != null) {
+            mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
+            mUid = arguments.getString(ARG_UID)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -50,6 +57,7 @@ class RecieptFragment : Fragment() {
         val view = inflater!!.inflate(R.layout.fragment_reciept_list, container, false)
         val rv = view.recieptList
         val totalPriceView = view.totalPrice
+        val qrImageView = view.qrImage
         // Set the adapter
         if (rv is RecyclerView) {
             val context = rv.getContext()
@@ -66,7 +74,9 @@ class RecieptFragment : Fragment() {
             for (i in 0 until events.size) {
                 total += events[i].price
             }
-            totalPriceView.text = total.toString()
+            totalPriceView.text = "₹ " + total.toString()
+            val qrBmp = QRCode.from("http://192.168.1.6:1337/$mUid/confirm").bitmap()
+            qrImageView.setImageBitmap(qrBmp)
             Log.d("SIZE", events.size.toString())
             rv.adapter = RecieptRecyclerViewAdapter(events, mListener)
 

@@ -22,9 +22,10 @@ class LoginActivity : AppCompatActivity() {
     private val APP_TAG = "LOGIN_ACTIVITY"
     private val REQUEST_SIGNUP = 0
 
-    data class Token(val data: String = "") {
+    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "")
+    data class Token(val jwt: String = "", val user: User) {
         class Deserializer: ResponseDeserializable<Token> {
-            override fun deserialize(content: String) = Gson().fromJson(content, Token::class.java)
+            override fun deserialize(content: String): Token? = Gson().fromJson(content, Token::class.java)
         }
     }
 
@@ -62,17 +63,18 @@ class LoginActivity : AppCompatActivity() {
         val progressDialog = indeterminateProgressDialog("Loading...")
         progressDialog.show()
 
-        "http://192.168.1.7:3000/api/auth/authenticate".httpPost()
-                .body("email=${loginEmail.text.toString()}&password=${loginPassword.text.toString()}")
+        "http://192.168.1.6:1337/auth/local".httpPost()
+                .body("identifier=${loginEmail.text.toString()}&password=${loginPassword.text.toString()}")
                 .responseObject(Token.Deserializer()) {_, _, result ->
                     val (token, error) = result
                     if (error == null) {
-                        Log.d(APP_TAG, token?.data)
+                        Log.d(APP_TAG, token?.jwt)
+                        Log.d(APP_TAG, token?.user?.email)
                         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
-                        val jwt = JWT(token!!.data)
-                        editor.putString(getString(R.string.token_key), token.data)
-                        editor.putString(getString(R.string.uid_key), jwt.subject)
+                        editor.putString(getString(R.string.token_key), token?.jwt)
+                        editor.putString(getString(R.string.uid_key), token?.user?.id)
+                        editor.putString("UNAME", token?.user?.username)
                         editor.apply()
                         progressDialog.dismiss()
                         onLoginSuccess()

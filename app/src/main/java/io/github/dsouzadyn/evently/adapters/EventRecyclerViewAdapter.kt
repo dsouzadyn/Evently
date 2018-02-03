@@ -1,14 +1,18 @@
 package io.github.dsouzadyn.evently.adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.github.kittinunf.fuel.core.ResponseDeserializable
+import com.github.kittinunf.fuel.httpPatch
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
+import io.github.dsouzadyn.evently.MainActivity
 import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.database
 
@@ -30,7 +34,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
 
 
 
-    data class Acknowledgement(val data: String) {
+    data class Acknowledgement(val n: Int, val nModified: Int, val ok: Int) {
         class Deserializer: ResponseDeserializable<Acknowledgement> {
             override fun deserialize(content: String) = Gson().fromJson(content, Acknowledgement::class.java)
         }
@@ -49,26 +53,33 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         holder.title.text = mValues[position].name
         holder.description.text = mValues[position].description
         holder.price.text = mValues[position].price.toString()
+
         holder.register.setOnClickListener {
             context.alert("Do you wan't to confirm your registration for " + mValues[position].name + " ?", "Confirmation") {
+                Log.d("K", "http://192.168.43.41:1337/event/${mValues[position].id}/register")
                 yesButton {
-                    "http://192.168.1.7:3000/users/$mUid/events".httpPost()
-                            .body("id=${mValues[position].id}")
+                    "http://192.168.1.6:1337/event/${mValues[position].id}/register".httpPatch()
+                            .body("users=$mUid")
                             .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
                                 val (acknowledgement, error) = result
                                 if (error == null) {
-                                    context.database.use {
-                                        insert(
-                                                Event.TABLE_NAME,
-                                                Event.COLUMN_ID to mValues[position].id,
-                                                Event.COLUMN_NAME to mValues[position].name,
-                                                Event.COLUMN_PRICE to mValues[position].price,
-                                                Event.COLUMN_UID to mUid
-                                        )
+
+                                    if(acknowledgement?.nModified == 1) {
+                                        context.alert("Successfully registered").show()
+                                        context.database.use {
+                                            insert(
+                                                    Event.TABLE_NAME,
+                                                    Event.COLUMN_ID to mValues[position].id,
+                                                    Event.COLUMN_NAME to mValues[position].name,
+                                                    Event.COLUMN_PRICE to mValues[position].price,
+                                                    Event.COLUMN_UID to mUid
+                                            )
+                                        }
+                                    } else {
+                                        context.alert("It looks like you've already registerd for the event!").show()
                                     }
-                                    context.alert(acknowledgement!!.data).show()
                                 } else {
-                                    context.alert("Event is full, cannot register!").show()
+                                    context.alert(error.localizedMessage).show()
                                 }
                             }
                 }

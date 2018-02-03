@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -78,6 +78,17 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:entries="@array/semester_array" />
+        <Spinner
+            android:id="@+id/signUpCollege"
+            android:spinnerMode="dialog"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:prompt="@string/college_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:entries="@array/college_array" />
 
         <Button
             android:id="@+id/signUpBtn"
@@ -89,4 +100,4 @@
             android:text="@string/btn_signup"
             android:layout_height="wrap_content" />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</ScrollView>
