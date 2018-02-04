@@ -14,6 +14,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.google.gson.Gson
 import io.github.dsouzadyn.evently.fragments.DayFragment
 import io.github.dsouzadyn.evently.fragments.EventFragment
+import io.github.dsouzadyn.evently.fragments.HomeFragment
 import io.github.dsouzadyn.evently.fragments.RecieptFragment
 import io.github.dsouzadyn.evently.models.DayContent
 import io.github.dsouzadyn.evently.models.EventContent
@@ -43,103 +44,30 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         }
     }
 
-
-
-
     override fun onListFragmentInteraction(item: DayContent.DayItem) {
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val uid = sharedPref.getString(getString(R.string.uid_key), "")
         val uname = sharedPref.getString(getString(R.string.uname_key), "")
         when {
             item.id == DAY_ONE -> {
-//                EventContent.addItem(
-//                        EventContent.createEventItem(1, "Day 1"))
-                EventContent.ITEMS.clear()
-                EventContent.ITEM_MAP.clear()
-                var i = 0
-                if (events != null) {
-                    events?.filterIndexed { index, value ->
-                        //val date = LocalDateTime.parse(value.start_time)
-                        Log.d("DATE", value.start_time)
-                        value.start_time.contains("2018-02-22")
-                    }?.forEach { e ->
-                        Log.d("i", i.toString())
-                        EventContent.addItem(
-                                EventContent.createEventItem(
-                                        i,
-                                        e.id,
-                                        e.name,
-                                        e.description,
-                                        e.capacity,
-                                        e.start_time,
-                                        e.end_time,
-                                        e.price
-                                ))
-                    }
-                    if(EventContent.ITEMS.size > 0)
-                        navigateToFragment(EventFragment.newInstance(1, uid))
-                }
+                // Launch the day 1 fragment
+                navigateEvents("2018-02-23", uid)
             }
             item.id == DAY_TWO -> {
-                EventContent.ITEMS.clear()
-                var i = 0
-                if (events != null) {
-                    events?.filterIndexed { index, value ->
-                        //val date = LocalDateTime.parse(value.start_time)
-                        Log.d("DATE", value.start_time)
-                        value.start_time.contains("2018-02-23")
-                    }?.forEach { e ->
-                        EventContent.addItem(
-                                EventContent.createEventItem(
-                                        i++,
-                                        e.id,
-                                        e.name,
-                                        e.description,
-                                        e.capacity,
-                                        e.start_time,
-                                        e.end_time,
-                                        e.price
-                                ))
-                    }
-                    if(EventContent.ITEMS.size > 0)
-                        navigateToFragment(EventFragment.newInstance(1, uid))
-                }
+                // Launch the day 2 fragment
+                navigateEvents("2018-02-23", uid)
             }
             item.id == DAY_THREE -> {
                 // Launch the day 3 fragment
-                EventContent.ITEMS.clear()
-                var i = 0
-                if (events != null) {
-                    events?.filterIndexed { index, value ->
-
-                        Log.d("DATE", value.start_time)
-                        value.start_time.contains("2018-02-24")
-                    }?.forEach { e ->
-                        EventContent.addItem(
-                                EventContent.createEventItem(
-                                        i++,
-                                        e.id,
-                                        e.name,
-                                        e.description,
-                                        e.capacity,
-                                        e.start_time,
-                                        e.end_time,
-                                        e.price
-                                ))
-                    }
-                    if (EventContent.ITEMS.size > 0)
-                        navigateToFragment(EventFragment.newInstance(1, uid))
-                }
+                navigateEvents("2018-02-24", uid)
             }
             item.id == MY_EVENTS -> {
-                // TODO Launch the my events activity
+                // Launch my events fragment
                 navigateToFragment(RecieptFragment.newInstance(1, uid, uname))
             }
             else -> Log.e("ERROR", "Something went wrong")
         }
     }
-
-    // TODO Implement logout button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -211,6 +139,32 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
             transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
             transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
             transaction.commit()
+        }
+    }
+
+    private fun navigateEvents(date: String = "", uid: String = "") {
+        EventContent.ITEMS.clear()
+        var i = 0
+        if (events != null) {
+            events?.filterIndexed { index, value ->
+
+                Log.d("DATE", value.start_time)
+                value.start_time.contains(date)
+            }?.forEach { e ->
+                EventContent.addItem(
+                        EventContent.createEventItem(
+                                i++,
+                                e.id,
+                                e.name,
+                                e.description,
+                                e.capacity,
+                                e.start_time,
+                                e.end_time,
+                                e.price
+                        ))
+            }
+            if (EventContent.ITEMS.size > 0)
+                navigateToFragment(EventFragment.newInstance(1, uid))
         }
     }
 

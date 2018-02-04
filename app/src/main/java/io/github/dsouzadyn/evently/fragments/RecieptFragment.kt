@@ -57,7 +57,7 @@ class RecieptFragment : Fragment() {
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
             mUid = arguments.getString(ARG_UID)
-            mUname = arguments.getString(ARG_UID)
+            mUname = arguments.getString(ARG_UNAME)
         }
     }
 
@@ -68,6 +68,7 @@ class RecieptFragment : Fragment() {
         val totalPriceView = view.totalPrice
         val qrImageView = view.qrImage
         val confirmationView = view.confirmationText
+        val helloView = view.hello
         // Set the adapter
         if (rv is RecyclerView) {
             val context = rv.getContext()
@@ -84,8 +85,9 @@ class RecieptFragment : Fragment() {
             for (i in 0 until events.size) {
                 total += events[i].price
             }
+            helloView.text = "Hello, $mUname"
             totalPriceView.text = "₹ $total"
-            val qrBmp = QRCode.from("${getString(R.string.base_api_url)}/user/$mUid/confirm").withSize(112, 112).bitmap()
+            val qrBmp = QRCode.from("${getString(R.string.base_api_url)}/user/$mUid/confirm").withSize(172, 172).bitmap()
             qrImageView.setImageBitmap(qrBmp)
             val sharedPref = activity.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
             val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")

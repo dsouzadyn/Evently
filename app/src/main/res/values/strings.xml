@@ -65,4 +65,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="info_college">file:///android_asset/college_info.md</string>
+    <string name="info_etamax">file:///android_asset/etamax_info.md</string>
+    <string name="info_theme">file:///android_asset/theme_info.md</string>
 </resources>

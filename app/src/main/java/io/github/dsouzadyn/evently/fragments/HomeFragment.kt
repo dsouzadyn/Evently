@@ -1,7 +1,8 @@
-package io.github.dsouzadyn.evently
+package io.github.dsouzadyn.evently.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,9 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import io.github.dsouzadyn.evently.fragments.DayFragment
-import kotlinx.android.synthetic.main.fragment_home.*
-import org.jetbrains.anko.support.v4.share
+import io.github.dsouzadyn.evently.InformationFragment
+import io.github.dsouzadyn.evently.R
+import io.github.dsouzadyn.evently.ScannerActivity
 
 
 /**
@@ -42,27 +43,54 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_home, container, false)
+
         val scannerBtn = view.findViewById<ImageButton>(R.id.scannerBtn)
+        val collegeBtn = view.findViewById<ImageButton>(R.id.btnCollegeInfo)
+        val etamaxBtn = view.findViewById<ImageButton>(R.id.btnAboutEtamax)
+        val eventBtn = view.findViewById<ImageButton>(R.id.btnEvents)
+
         val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val role = sharedPref.getInt(getString(R.string.urole_key), -1)
+
         if (role == 2) {
             scannerBtn.visibility = View.VISIBLE
+            scannerBtn.setOnClickListener(View.OnClickListener {
+                val scannerIntent = Intent(activity, ScannerActivity::class.java)
+                startActivity(scannerIntent)
+            })
         }
-        scannerBtn.setOnClickListener(View.OnClickListener {
-            val scannerIntent = Intent(activity, ScannerActivity::class.java)
-            startActivity(scannerIntent)
+
+        collegeBtn.setOnClickListener(View.OnClickListener {
+            onInfoBtnClick("college")
         })
-        val eventBtn = view.findViewById<ImageButton>(R.id.btnEvents)
+
+        etamaxBtn.setOnClickListener(View.OnClickListener {
+            onInfoBtnClick("etamax")
+        })
+
         eventBtn.setOnClickListener(View.OnClickListener {
-            val transaction = activity.supportFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
-            transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1)).addToBackStack("events")
-            transaction.commit()
+            onEventBtnClick()
         })
+
         return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
+
+    private fun onEventBtnClick() {
+        val transaction = activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+        transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1)).addToBackStack("events")
+        transaction.commit()
+    }
+
+    private fun onInfoBtnClick(info: String) {
+        val transaction = activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+        transaction.replace(R.id.fragmentContainer, InformationFragment.newInstance(info)).addToBackStack("infos")
+        transaction.commit()
+    }
+
 
 
     override fun onAttach(context: Context?) {
