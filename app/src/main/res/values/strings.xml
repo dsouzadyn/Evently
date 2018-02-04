@@ -4,6 +4,9 @@
     <string name="settings_file">EVENTLY_PREFS</string>
     <string name="token_key">TOKEN</string>
     <string name="uid_key">UID</string>
+    <string name="uname_key">UNAME</string>
+    <string name="conf_key">CONF</string>
+    <string name="urole_key">UROLE</string>
 
     <string name="progress_loading">Loading...</string>
 
@@ -26,8 +29,10 @@
     <string name="text_committee">Committee</string>
     <string name="text_college">College Info</string>
     <string name="text_etamax">About Etamax</string>
+    <string name="text_unconfirmed">UNC</string>
 
     <string name="currency_rupee">₹</string>
+    <string name="scanner">Scanner</string>
 
     <string name="toast_login_failed">Something went wrong!</string>
 

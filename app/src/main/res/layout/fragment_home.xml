@@ -1,13 +1,29 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     tools:context="io.github.dsouzadyn.evently.HomeFragment">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/scannerBtn"
+            android:src="@drawable/ic_maximize"
+            android:layout_width="32dp"
+            android:background="@color/colorWhite"
+            android:contentDescription="@string/scanner"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="right"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
 
     <GridLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:columnCount="2">
         <LinearLayout
@@ -118,4 +134,5 @@
 
 
     </GridLayout>
-</FrameLayout>
+    </LinearLayout>
+</ScrollView>

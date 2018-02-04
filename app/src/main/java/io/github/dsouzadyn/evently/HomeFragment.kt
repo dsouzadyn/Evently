@@ -1,6 +1,7 @@
 package io.github.dsouzadyn.evently
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import io.github.dsouzadyn.evently.fragments.DayFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.share
 
 
 /**
@@ -40,6 +42,16 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_home, container, false)
+        val scannerBtn = view.findViewById<ImageButton>(R.id.scannerBtn)
+        val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+        val role = sharedPref.getInt(getString(R.string.urole_key), -1)
+        if (role == 2) {
+            scannerBtn.visibility = View.VISIBLE
+        }
+        scannerBtn.setOnClickListener(View.OnClickListener {
+            val scannerIntent = Intent(activity, ScannerActivity::class.java)
+            startActivity(scannerIntent)
+        })
         val eventBtn = view.findViewById<ImageButton>(R.id.btnEvents)
         eventBtn.setOnClickListener(View.OnClickListener {
             val transaction = activity.supportFragmentManager.beginTransaction()

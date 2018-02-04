@@ -55,36 +55,41 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         holder.price.text = mValues[position].price.toString()
 
         holder.register.setOnClickListener {
-            context.alert("Do you wan't to confirm your registration for " + mValues[position].name + " ?", "Confirmation") {
-                Log.d("K", "http://192.168.43.41:1337/event/${mValues[position].id}/register")
-                yesButton {
-                    "http://192.168.1.6:1337/event/${mValues[position].id}/register".httpPatch()
-                            .body("users=$mUid")
-                            .responseObject(Acknowledgement.Deserializer()) {_, _, result ->
-                                val (acknowledgement, error) = result
-                                if (error == null) {
+            val sharedPref = context.getSharedPreferences(context.getString(R.string.settings_file), Context.MODE_PRIVATE)
+            val conf = sharedPref.getString(context.getString(R.string.conf_key), "")
+            if(conf == "") {
+                context.alert("Do you wan't to confirm your registration for " + mValues[position].name + " ?", "Confirmation") {
+                    yesButton {
+                        "${context.getString(R.string.base_api_url)}/event/${mValues[position].id}/register".httpPatch()
+                                .body("users=$mUid")
+                                .responseObject(Acknowledgement.Deserializer()) { _, _, result ->
+                                    val (acknowledgement, error) = result
+                                    if (error == null) {
 
-                                    if(acknowledgement?.nModified == 1) {
-                                        context.alert("Successfully registered").show()
-                                        context.database.use {
-                                            insert(
-                                                    Event.TABLE_NAME,
-                                                    Event.COLUMN_ID to mValues[position].id,
-                                                    Event.COLUMN_NAME to mValues[position].name,
-                                                    Event.COLUMN_PRICE to mValues[position].price,
-                                                    Event.COLUMN_UID to mUid
-                                            )
+                                        if (acknowledgement?.nModified == 1) {
+                                            context.alert("Successfully registered").show()
+                                            context.database.use {
+                                                insert(
+                                                        Event.TABLE_NAME,
+                                                        Event.COLUMN_ID to mValues[position].id,
+                                                        Event.COLUMN_NAME to mValues[position].name,
+                                                        Event.COLUMN_PRICE to mValues[position].price,
+                                                        Event.COLUMN_UID to mUid
+                                                )
+                                            }
+                                        } else {
+                                            context.alert("It looks like you've already registerd for the event!").show()
                                         }
                                     } else {
-                                        context.alert("It looks like you've already registerd for the event!").show()
+                                        context.alert(error.localizedMessage).show()
                                     }
-                                } else {
-                                    context.alert(error.localizedMessage).show()
                                 }
-                            }
-                }
-                noButton {  }
-            }.show()
+                    }
+                    noButton { }
+                }.show()
+            } else {
+                context.alert("Unfortunately you're booking is confirmed and no more registrations are possible!").show()
+            }
         }
         holder.mView.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.mItem!!)

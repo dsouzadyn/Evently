@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     private val APP_TAG = "LOGIN_ACTIVITY"
     private val REQUEST_SIGNUP = 0
 
-    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "")
+    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "", val confirmed: Boolean, val role: Int)
     data class Token(val jwt: String = "", val user: User) {
         class Deserializer: ResponseDeserializable<Token> {
             override fun deserialize(content: String): Token? = Gson().fromJson(content, Token::class.java)
@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
         val progressDialog = indeterminateProgressDialog("Loading...")
         progressDialog.show()
 
-        "http://192.168.1.6:1337/auth/local".httpPost()
+        "${getString(R.string.base_api_url)}/auth/local".httpPost()
                 .body("identifier=${loginEmail.text.toString()}&password=${loginPassword.text.toString()}")
                 .responseObject(Token.Deserializer()) {_, _, result ->
                     val (token, error) = result
@@ -74,7 +74,8 @@ class LoginActivity : AppCompatActivity() {
                         val editor = sharedPref.edit()
                         editor.putString(getString(R.string.token_key), token?.jwt)
                         editor.putString(getString(R.string.uid_key), token?.user?.id)
-                        editor.putString("UNAME", token?.user?.username)
+                        editor.putString(getString(R.string.uname_key), token?.user?.username)
+                        editor.putInt(getString(R.string.urole_key), token?.user?.role!!)
                         editor.apply()
                         progressDialog.dismiss()
                         onLoginSuccess()

@@ -37,7 +37,7 @@ class SignUpActivity : AppCompatActivity() {
         val bodyString = "username=$name&email=$email&password=$password&" +
                 "branch=$branch&semester=$semester&roll_number=$rollNumber&" +
                 "college=$college"
-        "http://192.168.1.6:1337/auth/local/register".httpPost()
+        "${getString(R.string.base_api_url)}/auth/local/register".httpPost()
                 .body(bodyString)
                 .responseString {_, response, result ->
                     val (_, error) = result

@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
     override fun onListFragmentInteraction(item: DayContent.DayItem) {
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val uid = sharedPref.getString(getString(R.string.uid_key), "")
+        val uname = sharedPref.getString(getString(R.string.uname_key), "")
         when {
             item.id == DAY_ONE -> {
 //                EventContent.addItem(
@@ -132,7 +133,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
             }
             item.id == MY_EVENTS -> {
                 // TODO Launch the my events activity
-                navigateToFragment(RecieptFragment.newInstance(1, uid))
+                navigateToFragment(RecieptFragment.newInstance(1, uid, uname))
             }
             else -> Log.e("ERROR", "Something went wrong")
         }
@@ -155,7 +156,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
             val progressDialog = indeterminateProgressDialog("Fetching events...")
             FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
             progressDialog.show()
-            "http://192.168.1.6:1337/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
+            "${getString(R.string.base_api_url)}/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
                 events = result.component1()
                 error = result.component2()
                 if(error == null) {
@@ -191,7 +192,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
             val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
             FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
             progressDialog.show()
-            "http://192.168.1.6:1337/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
+            "${getString(R.string.base_api_url)}/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
                 events = result.component1()
                 error = result.component2()
                 if(error == null) {
