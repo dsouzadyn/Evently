@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
 
     data class Event(val id: String, val name: String, val description: String, val capacity: Int,
-                     val start_time: String, val end_time: String, val price: Float) {
+                     val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String) {
         class Deserializer: ResponseDeserializable<List<Event>> {
             override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
         }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         when {
             item.id == DAY_ONE -> {
                 // Launch the day 1 fragment
-                navigateEvents("2018-02-23", uid)
+                navigateEvents("2018-02-22", uid)
             }
             item.id == DAY_TWO -> {
                 // Launch the day 2 fragment
@@ -160,7 +160,9 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                 e.capacity,
                                 e.start_time,
                                 e.end_time,
-                                e.price
+                                e.price,
+                                e.type,
+                                e.subtype
                         ))
             }
             if (EventContent.ITEMS.size > 0)

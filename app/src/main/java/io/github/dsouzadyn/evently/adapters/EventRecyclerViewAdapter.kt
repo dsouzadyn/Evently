@@ -1,6 +1,8 @@
 package io.github.dsouzadyn.evently.adapters
 
 import android.content.Context
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -48,11 +50,18 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.mView.context
+
         holder.mItem = mValues[position]
         holder.time.text = getTime(mValues[position].start_time, mValues[position].end_time)
         holder.title.text = mValues[position].name
         holder.description.text = mValues[position].description
         holder.price.text = mValues[position].price.toString()
+        holder.etype.text = mValues[position].type
+        holder.subtype.text = mValues[position].subtype
+
+        if(mValues[position].type == "TECHNICAL") {
+            holder.mView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
+        }
 
         holder.register.setOnClickListener {
             val sharedPref = context.getSharedPreferences(context.getString(R.string.settings_file), Context.MODE_PRIVATE)
@@ -108,6 +117,8 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         val time: TextView
         val title: TextView
         val description: TextView
+        val etype: TextView
+        val subtype: TextView
         val price: TextView
         val register: Button
 
@@ -118,6 +129,8 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
             title = mView.findViewById<View>(R.id.itemTitle) as TextView
             description = mView.findViewById<View>(R.id.itemDescription) as TextView
             price = mView.findViewById<View>(R.id.itemPrice) as TextView
+            etype = mView.findViewById<View>(R.id.itemType) as TextView
+            subtype = mView.findViewById<View>(R.id.itemSubType) as TextView
             register = mView.findViewById<View>(R.id.itemRegisterBtn) as Button
 
         }
