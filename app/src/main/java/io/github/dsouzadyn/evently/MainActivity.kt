@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
 
     data class Event(val id: String, val name: String, val description: String, val capacity: Int,
-                     val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String) {
+                     val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String, val location: String) {
         class Deserializer: ResponseDeserializable<List<Event>> {
             override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
         }
@@ -162,7 +162,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                 e.end_time,
                                 e.price,
                                 e.type,
-                                e.subtype
+                                e.subtype,
+                                e.location
                         ))
             }
             if (EventContent.ITEMS.size > 0)

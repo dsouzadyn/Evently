@@ -24,7 +24,7 @@ class DatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "EventsDatabas
 
     override fun onCreate(database: SQLiteDatabase) {
         database.createTable(Event.TABLE_NAME, true, Event.COLUMN_ID to TEXT + PRIMARY_KEY,
-                Event.COLUMN_UID to TEXT, Event.COLUMN_NAME to TEXT, Event.COLUMN_PRICE to INTEGER)
+                Event.COLUMN_UID to TEXT, Event.COLUMN_NAME to TEXT, Event.COLUMN_PRICE to INTEGER, Event.COLUMN_LOCATION to TEXT)
     }
 
     override fun onUpgrade(database: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

@@ -29,7 +29,7 @@ object EventContent {
     }
 
     fun createEventItem(position: Int, id: String, name: String, description: String, capacity: Int
-    , start_time: String, end_time: String, price: Float, type: String, subtype: String): EventItem {
+    , start_time: String, end_time: String, price: Float, type: String, subtype: String, location: String): EventItem {
         return EventItem(id,
                 name,
                 description,
@@ -39,6 +39,7 @@ object EventContent {
                 price,
                 type,
                 subtype,
+                location,
                 makeDetails(position))
     }
 
@@ -56,7 +57,7 @@ object EventContent {
      */
     class EventItem(val id: String, val name: String, val description: String, val capacity: Int,
                     val start_time: String, val end_time: String, val price: Float,
-                    val type: String, val subtype: String,
+                    val type: String, val subtype: String, val location: String,
                     val details: String) {
 
         override fun toString(): String {

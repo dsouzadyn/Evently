@@ -29,7 +29,8 @@ class RecieptRecyclerViewAdapter(var mEvents: List<Event>, private val mListener
         if(mEvents != null) {
             holder.mItem = mEvents[position]
             holder.mIdView.text = mEvents[position].name
-            holder.mContentView.text = mEvents[position].price.toString();
+            holder.mContentView.text = mEvents[position].price.toString()
+            holder.mLocationView.text = "Location: ${mEvents[position].location}"
         }
         holder.mView.setOnClickListener {
             //mListener?.onListFragmentInteraction(holder.mItem)
@@ -51,11 +52,13 @@ class RecieptRecyclerViewAdapter(var mEvents: List<Event>, private val mListener
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView
         val mContentView: TextView
+        val mLocationView: TextView
         var mItem: Event? = null
 
         init {
             mIdView = mView.findViewById<View>(R.id.id) as TextView
             mContentView = mView.findViewById<View>(R.id.content) as TextView
+            mLocationView = mView.findViewById<View>(R.id.location) as TextView
         }
 
         override fun toString(): String {

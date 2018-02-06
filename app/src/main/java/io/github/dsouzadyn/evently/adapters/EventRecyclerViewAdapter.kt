@@ -58,6 +58,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         holder.price.text = mValues[position].price.toString()
         holder.etype.text = mValues[position].type
         holder.subtype.text = mValues[position].subtype
+        holder.location.text = mValues[position].location
 
         if(mValues[position].type == "TECHNICAL") {
             holder.mView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
@@ -85,7 +86,8 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                                                         Event.COLUMN_ID to mValues[position].id,
                                                         Event.COLUMN_NAME to mValues[position].name,
                                                         Event.COLUMN_PRICE to mValues[position].price,
-                                                        Event.COLUMN_UID to mUid
+                                                        Event.COLUMN_UID to mUid,
+                                                        Event.COLUMN_LOCATION to mValues[position].location
                                                 )
                                             }
                                         } else {
@@ -118,6 +120,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val time: TextView
         val title: TextView
+        val location: TextView
         val description: TextView
         val etype: TextView
         val subtype: TextView
@@ -134,7 +137,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
             etype = mView.findViewById<View>(R.id.itemType) as TextView
             subtype = mView.findViewById<View>(R.id.itemSubType) as TextView
             register = mView.findViewById<View>(R.id.itemRegisterBtn) as Button
-
+            location = mView.findViewById<View>(R.id.itemLocation) as TextView
         }
 
         override fun toString(): String {
