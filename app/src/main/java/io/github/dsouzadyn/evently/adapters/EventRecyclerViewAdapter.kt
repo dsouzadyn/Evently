@@ -61,6 +61,8 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
 
         if(mValues[position].type == "TECHNICAL") {
             holder.mView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
+        } else {
+            holder.mView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
         }
 
         holder.register.setOnClickListener {

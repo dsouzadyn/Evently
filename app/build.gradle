@@ -16,10 +16,10 @@ android {
     }
     buildTypes {
         debug {
-            resValue "string", "base_api_url", "http://192.168.1.8:1337"
+            resValue "string", "base_api_url", "http://etamax.fcrit.ac.in:1337"
         }
         release {
-            resValue "string", "base_api_url", "http://192.168.1.8:1337"
+            resValue "string", "base_api_url", "http://etamax.fcrit.ac.in:1337"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

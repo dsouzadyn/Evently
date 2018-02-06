@@ -2,7 +2,6 @@ package io.github.dsouzadyn.evently.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import io.github.dsouzadyn.evently.InformationFragment
 import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.ScannerActivity
 
@@ -44,6 +42,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_home, container, false)
 
+        val sponsorBtn = view.findViewById<ImageButton>(R.id.btnSponsors)
         val scannerBtn = view.findViewById<ImageButton>(R.id.scannerBtn)
         val collegeBtn = view.findViewById<ImageButton>(R.id.btnCollegeInfo)
         val etamaxBtn = view.findViewById<ImageButton>(R.id.btnAboutEtamax)
@@ -59,6 +58,10 @@ class HomeFragment : Fragment() {
                 startActivity(scannerIntent)
             })
         }
+
+        sponsorBtn.setOnClickListener(View.OnClickListener {
+            onSponsorBtnClick()
+        })
 
         collegeBtn.setOnClickListener(View.OnClickListener {
             onInfoBtnClick("college")
@@ -81,6 +84,13 @@ class HomeFragment : Fragment() {
         val transaction = activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
         transaction.replace(R.id.fragmentContainer, DayFragment.newInstance(1)).addToBackStack("events")
+        transaction.commit()
+    }
+
+    private fun onSponsorBtnClick() {
+        val transaction = activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+        transaction.replace(R.id.fragmentContainer, SponsorFragment.newInstance("","")).addToBackStack("sponsors")
         transaction.commit()
     }
 

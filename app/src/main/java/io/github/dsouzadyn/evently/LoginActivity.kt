@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private val REQUEST_SIGNUP = 0
 
     data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "", val confirmed: Boolean, val role: Int)
-    data class Token(val jwt: String = "", val user: User) {
+    data class Token(val jwt: String = "", val user: User, val message: String) {
         class Deserializer: ResponseDeserializable<Token> {
             override fun deserialize(content: String): Token? = Gson().fromJson(content, Token::class.java)
         }
@@ -65,9 +65,9 @@ class LoginActivity : AppCompatActivity() {
 
         "${getString(R.string.base_api_url)}/auth/local".httpPost()
                 .body("identifier=${loginEmail.text.toString()}&password=${loginPassword.text.toString()}")
-                .responseObject(Token.Deserializer()) {_, _, result ->
+                .responseObject(Token.Deserializer()) {r, re, result ->
                     val (token, error) = result
-                    if (error == null) {
+                    if (error == null && token?.message != "Bad Request") {
                         Log.d(APP_TAG, token?.jwt)
                         Log.d(APP_TAG, token?.user?.email)
                         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
@@ -76,14 +76,14 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString(getString(R.string.uid_key), token?.user?.id)
                         Log.d("UNAME", token?.user?.username)
                         editor.putString(getString(R.string.uname_key), token?.user?.username)
-                        if(token?.user?.confirmed == true)
+                        if(token?.user?.confirmed!!)
                             editor.putString(getString(R.string.conf_key), "CONF")
                         editor.putInt(getString(R.string.urole_key), token?.user?.role!!)
                         editor.apply()
                         progressDialog.dismiss()
                         onLoginSuccess()
                     } else {
-                        Log.d(APP_TAG, error!!.message)
+
                         progressDialog.dismiss()
                         onLoginFailed()
                     }

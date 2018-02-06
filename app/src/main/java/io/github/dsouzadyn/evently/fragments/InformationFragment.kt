@@ -1,4 +1,4 @@
-package io.github.dsouzadyn.evently
+package io.github.dsouzadyn.evently.fragments
 
 import android.content.Context
 import android.net.Uri
@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.dsouzadyn.evently.R
 import us.feras.mdv.MarkdownView
 
 
