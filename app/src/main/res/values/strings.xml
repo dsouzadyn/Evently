@@ -40,6 +40,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_name">Name</string>
     <string name="hint_roll_no">Roll Number</string>
+    <string name="hint_phone_no">Phone Number</string>
 
     <string name="signup_helper">Not a member? Sign Up Here</string>
 

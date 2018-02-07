@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private val REQUEST_SIGNUP = 0
 
 
-    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "", val confirmed: Boolean, val role: Int)
+    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "",val confirmed: Boolean, val role: Int, val name: String = "", val number:String = "")
     data class Token(val jwt: String = "", val user: User, val message: String) {
         class Deserializer: ResponseDeserializable<Token> {
             override fun deserialize(content: String): Token? = Gson().fromJson(content, Token::class.java)
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                         val editor = sharedPref.edit()
                         editor.putString(getString(R.string.token_key), token?.jwt)
                         editor.putString(getString(R.string.uid_key), token?.user?.id)
-                        editor.putString(getString(R.string.uname_key), token?.user?.username)
+                        editor.putString(getString(R.string.uname_key), token?.user?.name)
                         if(token?.user?.confirmed!!)
                             editor.putString(getString(R.string.conf_key), "CONF")
                         editor.putInt(getString(R.string.urole_key), token?.user?.role!!)

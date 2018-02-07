@@ -34,9 +34,10 @@ class SignUpActivity : AppCompatActivity() {
         val semester = signUpSemester.selectedItem.toString()
         val rollNumber = signUpRollNumber.text.toString()
         val college = signUpCollege.selectedItem.toString()
-        val bodyString = "username=$name&email=$email&password=$password&" +
+        val number = signUpPhoneNumber.text.toString()
+        val bodyString = "name=$name&username=$email&email=$email&password=$password&" +
                 "branch=$branch&semester=$semester&roll_number=$rollNumber&" +
-                "college=$college"
+                "college=$college&number=$number"
         "${getString(R.string.base_api_url)}/auth/local/register".httpPost()
                 .body(bodyString)
                 .responseString {_, response, result ->
@@ -70,6 +71,7 @@ class SignUpActivity : AppCompatActivity() {
         val password = signUpPassword.text.toString()
         val branch = signUpBranch.selectedItem.toString()
         val semester = signUpSemester.selectedItem.toString().toInt()
+        val number = signUpPhoneNumber.text.toString()
         val college = signUpSemester.selectedItem.toString()
 
         if (name.isEmpty() || name.length < 4) {
@@ -91,6 +93,13 @@ class SignUpActivity : AppCompatActivity() {
             signUpPassword.error = "The password must be between 4 and 16 characters"
         } else {
             signUpPassword.error = null
+        }
+
+        if (number.isEmpty() || !Patterns.PHONE.matcher(number).matches()) {
+            valid = false
+            signUpPhoneNumber.error = "Please enter a valid phone"
+        } else {
+            signUpPhoneNumber.error = null
         }
 
         if (branch.isEmpty()) {
