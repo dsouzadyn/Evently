@@ -9,7 +9,7 @@
     <string name="urole_key">UROLE</string>
 
     <string name="progress_loading">Loading...</string>
-
+    <string name="text_etamax_login">Etamax2k18</string>
     <string name="btn_login">Login</string>
     <string name="btn_signup">Sign Up</string>
     <string name="btn_day_one">DAY ONE</string>

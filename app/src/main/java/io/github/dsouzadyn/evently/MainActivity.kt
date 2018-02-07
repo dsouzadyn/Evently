@@ -27,10 +27,13 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
     }
 
-    private val DAY_ONE = "1"
-    private val DAY_TWO = "2"
-    private val DAY_THREE = "3"
-    private val MY_EVENTS = "4"
+    private val CUMPOLSORY = "1"
+    private val NON_CUMPOLSORY = "2"
+
+    // private val DAY_ONE = "1"
+    // private val DAY_TWO = "2"
+    // private val DAY_THREE = "3"
+    private val MY_EVENTS = "3"
     private val SIGNIN_OK = 420
 
     var events : List<Event>? = null
@@ -38,7 +41,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
 
     data class Event(val id: String, val name: String, val description: String, val capacity: Int,
-                     val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String, val location: String) {
+                     val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String, val location: String, val cumpolsory: Boolean = false) {
         class Deserializer: ResponseDeserializable<List<Event>> {
             override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
         }
@@ -49,18 +52,15 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         val uid = sharedPref.getString(getString(R.string.uid_key), "")
         val uname = sharedPref.getString(getString(R.string.uname_key), "")
         when {
-            item.id == DAY_ONE -> {
-                // Launch the day 1 fragment
-                navigateEvents("2018-02-22", uid)
+            item.id == CUMPOLSORY -> {
+                // Launch the cumpolsory events
+                navigateEvents(true, uid)
             }
-            item.id == DAY_TWO -> {
-                // Launch the day 2 fragment
-                navigateEvents("2018-02-23", uid)
+            item.id == NON_CUMPOLSORY -> {
+                // Launch the non cumpolsory events
+                navigateEvents(false, uid)
             }
-            item.id == DAY_THREE -> {
-                // Launch the day 3 fragment
-                navigateEvents("2018-02-24", uid)
-            }
+
             item.id == MY_EVENTS -> {
                 // Launch my events fragment
                 navigateToFragment(RecieptFragment.newInstance(1, uid, uname))
@@ -142,14 +142,13 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         }
     }
 
-    private fun navigateEvents(date: String = "", uid: String = "") {
+    private fun navigateEvents(isCumpolsory: Boolean, uid: String = "") {
         EventContent.ITEMS.clear()
         var i = 0
         if (events != null) {
             events?.filterIndexed { index, value ->
 
-                Log.d("DATE", value.start_time)
-                value.start_time.contains(date)
+                value.cumpolsory == isCumpolsory
             }?.forEach { e ->
                 EventContent.addItem(
                         EventContent.createEventItem(
@@ -163,7 +162,8 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                                 e.price,
                                 e.type,
                                 e.subtype,
-                                e.location
+                                e.location,
+                                e.cumpolsory
                         ))
             }
             if (EventContent.ITEMS.size > 0)

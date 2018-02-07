@@ -13,10 +13,9 @@ object DayContent {
 
 
     init {
-        addItem(createDayItem(1, "DAY 1"))
-        addItem(createDayItem(2, "DAY 2"))
-        addItem(createDayItem(3, "DAY 3"))
-        addItem(createDayItem(4, "MY EVENTS"))
+        addItem(createDayItem(1, "CUMPOLSORY"))
+        addItem(createDayItem(2, "NON CUMPOLSORY"))
+        addItem(createDayItem(3, "MY EVENTS"))
     }
 
     private fun addItem(item: DayItem) {
