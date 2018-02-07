@@ -52,8 +52,6 @@ class ScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
         mScannerView?.stopCamera()
     }
     override fun handleResult(p0: Result?) {
-        Log.v("TAG", p0?.text) // Prints scan results
-        Log.v("TAG", p0?.barcodeFormat.toString()) // Prints the scan format (qrcode, pdf417 etc.)
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
         FuelManager.instance.baseHeaders = mapOf("Authorization" to token)

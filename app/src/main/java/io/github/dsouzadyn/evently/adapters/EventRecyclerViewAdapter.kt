@@ -102,7 +102,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                                             }
                                         } else {
                                             progress.dismiss()
-                                            context.alert("It looks like you've already registerd for the event!").show()
+                                            context.alert("Something went wrong!").show()
                                         }
                                     } else {
                                         context.alert(error.localizedMessage).show()

@@ -69,13 +69,10 @@ class LoginActivity : AppCompatActivity() {
                 .responseObject(Token.Deserializer()) {r, re, result ->
                     val (token, error) = result
                     if (error == null && token?.message != "Bad Request") {
-                        Log.d(APP_TAG, token?.jwt)
-                        Log.d(APP_TAG, token?.user?.email)
                         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
                         editor.putString(getString(R.string.token_key), token?.jwt)
                         editor.putString(getString(R.string.uid_key), token?.user?.id)
-                        Log.d("UNAME", token?.user?.username)
                         editor.putString(getString(R.string.uname_key), token?.user?.username)
                         if(token?.user?.confirmed!!)
                             editor.putString(getString(R.string.conf_key), "CONF")

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
     var error: FuelError? = null
 
 
-    data class Event(val id: String, val name: String, val description: String, val capacity: Int,
+    data class Event(val id: String, val name: String, val description: String = "", val capacity: Int,
                      val start_time: String, val end_time: String, val price: Float, val type: String, val subtype: String, val location: String, val cumpolsory: Boolean = false) {
         class Deserializer: ResponseDeserializable<List<Event>> {
             override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
 
-        Log.d("MAIN_ACTIVITY", token)
+
         if (token == "Bearer ") {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivityForResult(loginIntent, SIGNIN_OK)
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
                 if(events != null) {
 //                    for (event in events!!) {
 //                        Log.d("EVENT", event.name)
-//                    }
+//                     }
                     var i = 0
                     events?.filterIndexed { index, value ->
 
