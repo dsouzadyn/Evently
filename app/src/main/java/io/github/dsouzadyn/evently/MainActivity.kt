@@ -81,32 +81,30 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivityForResult(loginIntent, SIGNIN_OK)
         } else {
-            val progressDialog = indeterminateProgressDialog("Fetching events...")
-            FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
-            progressDialog.show()
-            "${getString(R.string.base_api_url)}/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
-                events = result.component1()
-                error = result.component2()
-                if(error == null) {
-                    progressDialog.dismiss()
-                    if(events != null) {
-                        for (event in events!!) {
-                            Log.d("EVENT", event.name)
-                        }
-                    }
-                } else {
-                    progressDialog.dismiss()
-                    Log.e("ERROR", error!!.message)
-                }
-            }
+//            val progressDialog = indeterminateProgressDialog("Fetching events...")
+//            FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
+//            progressDialog.show()
+//            "${getString(R.string.base_api_url)}/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
+//                events = result.component1()
+//                error = result.component2()
+//                if(error == null) {
+//                    progressDialog.dismiss()
+//                    if(events != null) {
+//                        for (event in events!!) {
+//                            Log.d("EVENT", event.name)
+//                        }
+//                    }
+//                } else {
+//                    progressDialog.dismiss()
+//                    Log.e("ERROR", error!!.message)
+//                }
+//            }
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
             transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
             transaction.commit()
         }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -115,26 +113,6 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == SIGNIN_OK) {
-            val progressDialog = indeterminateProgressDialog("Fetching events...")
-            val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
-            val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
-            FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
-            progressDialog.show()
-            "${getString(R.string.base_api_url)}/event".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
-                events = result.component1()
-                error = result.component2()
-                if(error == null) {
-                    progressDialog.dismiss()
-                    if(events != null) {
-                        for (event in events!!) {
-                            Log.d("EVENT", event.name)
-                        }
-                    }
-                } else {
-                    progressDialog.dismiss()
-                    Log.e("ERROR", error!!.message)
-                }
-            }
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
             transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
@@ -144,31 +122,74 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
     private fun navigateEvents(isCumpolsory: Boolean, uid: String = "") {
         EventContent.ITEMS.clear()
-        var i = 0
-        if (events != null) {
-            events?.filterIndexed { index, value ->
+        val progressDialog = indeterminateProgressDialog("Fetching events...")
+        val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+        val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
+        FuelManager.instance.baseHeaders = mapOf("Authorization" to token)
+        progressDialog.show()
+        "${getString(R.string.base_api_url)}/event?cumpolsory=$isCumpolsory".httpGet().responseObject(Event.Deserializer()) { _, _, result ->
+            events = result.component1()
+            error = result.component2()
+            if(error == null) {
+                progressDialog.dismiss()
+                if(events != null) {
+//                    for (event in events!!) {
+//                        Log.d("EVENT", event.name)
+//                    }
+                    var i = 0
+                    events?.filterIndexed { index, value ->
 
-                value.cumpolsory == isCumpolsory
-            }?.forEach { e ->
-                EventContent.addItem(
-                        EventContent.createEventItem(
-                                i++,
-                                e.id,
-                                e.name,
-                                e.description,
-                                e.capacity,
-                                e.start_time,
-                                e.end_time,
-                                e.price,
-                                e.type,
-                                e.subtype,
-                                e.location,
-                                e.cumpolsory
-                        ))
+                        value.cumpolsory == isCumpolsory
+                    }?.forEach { e ->
+                        EventContent.addItem(
+                                EventContent.createEventItem(
+                                        i++,
+                                        e.id,
+                                        e.name,
+                                        e.description,
+                                        e.capacity,
+                                        e.start_time,
+                                        e.end_time,
+                                        e.price,
+                                        e.type,
+                                        e.subtype,
+                                        e.location,
+                                        e.cumpolsory
+                                ))
+                    }
+                    if (EventContent.ITEMS.size > 0)
+                        navigateToFragment(EventFragment.newInstance(1, uid))
+                }
+            } else {
+                progressDialog.dismiss()
+                Log.e("ERROR", error!!.message)
             }
-            if (EventContent.ITEMS.size > 0)
-                navigateToFragment(EventFragment.newInstance(1, uid))
         }
+//        var i = 0
+//        if (events != null) {
+//            events?.filterIndexed { index, value ->
+//
+//                value.cumpolsory == isCumpolsory
+//            }?.forEach { e ->
+//                EventContent.addItem(
+//                        EventContent.createEventItem(
+//                                i++,
+//                                e.id,
+//                                e.name,
+//                                e.description,
+//                                e.capacity,
+//                                e.start_time,
+//                                e.end_time,
+//                                e.price,
+//                                e.type,
+//                                e.subtype,
+//                                e.location,
+//                                e.cumpolsory
+//                        ))
+//            }
+//            if (EventContent.ITEMS.size > 0)
+//                navigateToFragment(EventFragment.newInstance(1, uid))
+//        }
     }
 
     private fun navigateToFragment(fragment: Fragment) {

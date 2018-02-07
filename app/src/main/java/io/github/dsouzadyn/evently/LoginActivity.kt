@@ -22,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
     private val APP_TAG = "LOGIN_ACTIVITY"
     private val REQUEST_SIGNUP = 0
 
+
     data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "", val confirmed: Boolean, val role: Int)
     data class Token(val jwt: String = "", val user: User, val message: String) {
         class Deserializer: ResponseDeserializable<Token> {
@@ -83,7 +84,6 @@ class LoginActivity : AppCompatActivity() {
                         progressDialog.dismiss()
                         onLoginSuccess()
                     } else {
-
                         progressDialog.dismiss()
                         onLoginFailed()
                     }

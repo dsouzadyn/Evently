@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.ScannerActivity
@@ -47,6 +48,8 @@ class HomeFragment : Fragment() {
         val collegeBtn = view.findViewById<ImageButton>(R.id.btnCollegeInfo)
         val etamaxBtn = view.findViewById<ImageButton>(R.id.btnAboutEtamax)
         val eventBtn = view.findViewById<ImageButton>(R.id.btnEvents)
+        val committeeBtn = view.findViewById<ImageButton>(R.id.btnCommittee)
+        val logoutBtn = view.findViewById<Button>(R.id.btnLogout)
 
         val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val role = sharedPref.getInt(getString(R.string.urole_key), -1)
@@ -58,6 +61,10 @@ class HomeFragment : Fragment() {
                 startActivity(scannerIntent)
             })
         }
+
+        logoutBtn.setOnClickListener(View.OnClickListener {
+            onLogoutBtnClick();
+        })
 
         sponsorBtn.setOnClickListener(View.OnClickListener {
             onSponsorBtnClick()
@@ -73,6 +80,10 @@ class HomeFragment : Fragment() {
 
         eventBtn.setOnClickListener(View.OnClickListener {
             onEventBtnClick()
+        })
+
+        committeeBtn.setOnClickListener(View.OnClickListener {
+            onComitteBtnClick()
         })
 
         return view
@@ -94,10 +105,23 @@ class HomeFragment : Fragment() {
         transaction.commit()
     }
 
+    private fun onLogoutBtnClick() {
+        val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+        sharedPref.edit().clear().apply()
+        activity.finish()
+    }
+
     private fun onInfoBtnClick(info: String) {
         val transaction = activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
         transaction.replace(R.id.fragmentContainer, InformationFragment.newInstance(info)).addToBackStack("infos")
+        transaction.commit()
+    }
+
+    private fun onComitteBtnClick() {
+        val transaction = activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+        transaction.replace(R.id.fragmentContainer, BlankFragment.newInstance("", "")).addToBackStack("comittees")
         transaction.commit()
     }
 

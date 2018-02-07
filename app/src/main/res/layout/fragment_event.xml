@@ -10,13 +10,25 @@
     android:orientation="horizontal"
     android:background="@color/colorAccent">
 
-    <TextView
-        android:id="@+id/itemTime"
-        android:layout_marginTop="16dp"
-        android:textColor="#fff"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_time"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/itemTime"
+            android:layout_marginTop="16dp"
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_time"/>
+        <TextView
+            android:id="@+id/itemDay"
+            android:layout_marginTop="16dp"
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_time"/>
+    </LinearLayout>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

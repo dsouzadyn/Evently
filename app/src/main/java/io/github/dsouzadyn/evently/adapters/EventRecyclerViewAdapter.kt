@@ -24,6 +24,7 @@ import io.github.dsouzadyn.evently.models.Event
 import io.github.dsouzadyn.evently.models.EventContent
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.db.insert
+import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
 
@@ -59,6 +60,13 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         holder.etype.text = mValues[position].type
         holder.subtype.text = mValues[position].subtype
         holder.location.text = mValues[position].location
+        val d = getDay(mValues[position].start_time)
+        if (d == "2018-02-22")
+            holder.day.text = "Day 1"
+        else if (d == "2018-02-23")
+            holder.day.text = "Day 2"
+        else
+            holder.day.text = "Day 3"
 
         if(mValues[position].type == "TECHNICAL") {
             holder.mView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
@@ -72,12 +80,14 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
             if(conf == "") {
                 context.alert("Do you wan't to confirm your registration for " + mValues[position].name + " ?", "Confirmation") {
                     yesButton {
+                        val progress = context.indeterminateProgressDialog("Confirming...")
+                        progress.show()
                         "${context.getString(R.string.base_api_url)}/event/${mValues[position].id}/register".httpPatch()
                                 .body("users=$mUid")
                                 .responseObject(Acknowledgement.Deserializer()) { _, _, result ->
                                     val (acknowledgement, error) = result
                                     if (error == null) {
-
+                                        progress.dismiss()
                                         if (acknowledgement?.nModified == 1) {
                                             context.alert("Successfully registered").show()
                                             context.database.use {
@@ -91,6 +101,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
                                                 )
                                             }
                                         } else {
+                                            progress.dismiss()
                                             context.alert("It looks like you've already registerd for the event!").show()
                                         }
                                     } else {
@@ -117,6 +128,10 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         return "${start_time.subSequence(11, 16)}-${end_time.subSequence(11, 16)}"
     }
 
+    private fun getDay(start_time: String): String {
+        return "${start_time.subSequence(0,10)}"
+    }
+
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val time: TextView
         val title: TextView
@@ -126,6 +141,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
         val subtype: TextView
         val price: TextView
         val register: Button
+        val day: TextView
 
         var mItem: EventContent.EventItem? = null
 
@@ -138,6 +154,7 @@ class EventRecyclerViewAdapter(private val mValues: List<EventContent.EventItem>
             subtype = mView.findViewById<View>(R.id.itemSubType) as TextView
             register = mView.findViewById<View>(R.id.itemRegisterBtn) as Button
             location = mView.findViewById<View>(R.id.itemLocation) as TextView
+            day = mView.findViewById<View>(R.id.itemDay) as TextView
         }
 
         override fun toString(): String {

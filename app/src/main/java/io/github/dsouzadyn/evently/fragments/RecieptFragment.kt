@@ -27,21 +27,8 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.indeterminateProgressDialog
 
-
-/**
- * A fragment representing a list of Items.
- *
- *
- * Activities containing this fragment MUST implement the [OnListFragmentInteractionListener]
- * interface.
- */
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
- */
 class RecieptFragment : Fragment() {
 
-    // TODO: Customize parameters
     private var mColumnCount = 1
     private var mUid = ""
     private var mUname = ""
@@ -79,7 +66,7 @@ class RecieptFragment : Fragment() {
             }
 
             val events = context.database.use {
-                select(Event.TABLE_NAME).exec { parseList(classParser<Event>()) }
+                select(Event.TABLE_NAME).whereArgs(Event.COLUMN_UID + " = {mUid}", "mUid" to mUid).exec { parseList(classParser<Event>()) }
             }
             var total = 0.0f
             for (i in 0 until events.size) {
@@ -132,15 +119,7 @@ class RecieptFragment : Fragment() {
         mListener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
+
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onListFragmentInteraction(item: Event)
