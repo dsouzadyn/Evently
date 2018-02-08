@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back3"
     tools:context="io.github.dsouzadyn.evently.SignUpActivity">
     <LinearLayout
         android:orientation="vertical"
@@ -12,7 +13,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:paddingTop="16dp">
         <TextView
+
             android:text="@string/text_register"
+            android:textColor="@color/colorWhite"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -23,6 +26,8 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:hint="@string/hint_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -33,6 +38,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:hint="@string/hint_email"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -43,6 +50,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:hint="@string/hint_password"
+            android:textColorHint="@color/colorWhite"
+
+            android:textColor="@color/colorWhite"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -54,6 +64,8 @@
             android:layout_marginBottom="5dp"
             android:inputType="number"
             android:hint="@string/hint_roll_no"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <EditText
@@ -64,6 +76,8 @@
             android:layout_marginBottom="5dp"
             android:inputType="phone"
             android:hint="@string/hint_phone_no"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <Spinner
@@ -72,6 +86,7 @@
             android:layout_marginRight="16dp"
             android:spinnerMode="dialog"
             android:prompt="@string/branch_prompt"
+            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
@@ -87,6 +102,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
+            android:background="@color/colorWhite"
             android:entries="@array/semester_array" />
         <Spinner
             android:id="@+id/signUpCollege"
@@ -98,6 +114,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
+            android:background="@color/colorWhite"
             android:entries="@array/college_array" />
 
         <Button

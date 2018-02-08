@@ -12,6 +12,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.ScannerActivity
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.yesButton
 
 
 /**
@@ -106,9 +109,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun onLogoutBtnClick() {
-        val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
-        sharedPref.edit().clear().apply()
-        activity.finish()
+        context.alert("Do you really want to logout?") {
+            yesButton {
+                val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+                sharedPref.edit().clear().apply()
+                activity.finish()
+            }
+            noButton {  }
+        }.show()
     }
 
     private fun onInfoBtnClick(info: String) {

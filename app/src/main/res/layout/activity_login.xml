@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back1"
     tools:context="io.github.dsouzadyn.evently.LoginActivity">
     <LinearLayout
         app:layout_constraintBottom_toBottomOf="parent"
@@ -13,8 +14,8 @@
         <TextView
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
             android:text="@string/text_etamax_login"
+            android:textColor="@color/colorWhite"
             android:textAllCaps="true"
-            android:textColor="@color/colorBlack"
             android:paddingTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +23,7 @@
         <TextView
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
             android:text="@string/text_login"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorWhite"
             android:paddingTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,6 +34,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_marginTop="64dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -43,6 +46,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
