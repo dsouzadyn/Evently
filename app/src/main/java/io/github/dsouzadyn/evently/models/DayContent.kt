@@ -13,8 +13,8 @@ object DayContent {
 
 
     init {
-        addItem(createDayItem(1, "CUMPULSORY"))
-        addItem(createDayItem(2, "NON CUMPULSORY"))
+        addItem(createDayItem(1, "COMPULSORY"))
+        addItem(createDayItem(2, "NON COMPULSORY"))
         addItem(createDayItem(3, "MY EVENTS"))
     }
 

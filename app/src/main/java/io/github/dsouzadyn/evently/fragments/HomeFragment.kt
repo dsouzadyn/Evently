@@ -5,14 +5,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import io.github.dsouzadyn.evently.DatabaseHelper
 import io.github.dsouzadyn.evently.R
 import io.github.dsouzadyn.evently.ScannerActivity
+import io.github.dsouzadyn.evently.database
+import io.github.dsouzadyn.evently.models.Event
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.db.delete
+import org.jetbrains.anko.db.dropTable
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
 
@@ -66,7 +72,7 @@ class HomeFragment : Fragment() {
         }
 
         logoutBtn.setOnClickListener(View.OnClickListener {
-            onLogoutBtnClick();
+            onLogoutBtnClick()
         })
 
         sponsorBtn.setOnClickListener(View.OnClickListener {
@@ -112,6 +118,9 @@ class HomeFragment : Fragment() {
         context.alert("Do you really want to logout?") {
             yesButton {
                 val sharedPref = context.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
+                context.database.use {
+                    val d = delete(Event.TABLE_NAME, "uid = '${activity.getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE).getString(getString(R.string.uid_key), "")}'")
+                }
                 sharedPref.edit().clear().apply()
                 activity.finish()
             }

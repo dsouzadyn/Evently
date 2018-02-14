@@ -17,7 +17,6 @@
             android:textAlignment="center"
             android:text="Comittee"/>
         <android.support.v7.widget.CardView
-            android:layout_margin="16dp"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -43,12 +42,11 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_0"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
-            android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -73,12 +71,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_1"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -103,12 +101,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_2"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -133,12 +131,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_3"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -163,12 +161,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_4"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -193,12 +191,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_5"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -223,12 +221,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_6"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -253,12 +251,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_7"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -283,12 +281,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_8"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -313,12 +311,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_9"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -343,12 +341,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_10"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -373,12 +371,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_11"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -403,12 +401,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_12"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -433,12 +431,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_13"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -463,12 +461,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_14"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -493,12 +491,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_15"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -523,12 +521,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_16"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -553,12 +551,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_17"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -583,12 +581,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_18"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:padding="16dp"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
@@ -613,6 +611,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     android:text="@string/contact_phone_19"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>

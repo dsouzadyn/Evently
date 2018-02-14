@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 
         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
         val token = "Bearer " + sharedPref.getString(getString(R.string.token_key), "")
+        val uid = sharedPref.getString(getString(R.string.uid_key), "")
 
 
         if (token == "Bearer ") {
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 //            }
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
-            transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance("",""))
+            transaction.replace(R.id.fragmentContainer, HomeFragment.newInstance(uid,""))
             transaction.commit()
         }
     }
@@ -137,6 +138,7 @@ class MainActivity : AppCompatActivity(), DayFragment.OnListFragmentInteractionL
 //                        Log.d("EVENT", event.name)
 //                     }
                     var i = 0
+                    events = events?.sortedWith(compareBy({ it.name }))
                     events?.filterIndexed { index, value ->
 
                         value.cumpolsory == isCumpolsory

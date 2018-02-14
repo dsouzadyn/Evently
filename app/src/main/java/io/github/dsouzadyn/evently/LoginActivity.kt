@@ -12,7 +12,10 @@ import com.auth0.android.jwt.JWT
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
+import io.github.dsouzadyn.evently.models.Event
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.longToast
 
@@ -22,8 +25,19 @@ class LoginActivity : AppCompatActivity() {
     private val APP_TAG = "LOGIN_ACTIVITY"
     private val REQUEST_SIGNUP = 0
 
+    data class Event(val id: String, val name: String, val description: String = "", val capacity: Int,
+                     val start_time: String, val end_time: String, val price: Float = 0.0f, val type: String, val subtype: String, val location: String, val cumpolsory: Boolean = false) {
+        class Deserializer: ResponseDeserializable<List<Event>> {
+            override fun deserialize(content: String): List<Event>? = Gson().fromJson(content, Array<Event>::class.java).toList()
+        }
+    }
 
-    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "",val confirmed: Boolean, val role: Int, val name: String = "", val number:String = "")
+    data class Checker(val id: String, val is_valid: Boolean = true) {
+        class Deserializer: ResponseDeserializable<Checker> {
+            override fun deserialize(content: String): Checker? = Gson().fromJson(content, Checker::class.java)
+        }
+    }
+    data class User(val email: String= "", val id: String = "", val roll_number: Int, val semester: Int, val username: String = "",val confirmed: Boolean, val role: Int, val name: String = "", val number:String = "", val events: List<Event>, val checker: Checker)
     data class Token(val jwt: String = "", val user: User, val message: String) {
         class Deserializer: ResponseDeserializable<Token> {
             override fun deserialize(content: String): Token? = Gson().fromJson(content, Token::class.java)
@@ -68,12 +82,31 @@ class LoginActivity : AppCompatActivity() {
                 .body("identifier=${loginEmail.text.toString()}&password=${loginPassword.text.toString()}")
                 .responseObject(Token.Deserializer()) {r, re, result ->
                     val (token, error) = result
-                    if (error == null && token?.message != "Bad Request") {
+                    if (error == null && token?.user?.checker != null && !token?.user?.checker?.is_valid!!) {
+                        progressDialog.dismiss()
+                        alert("Please validate your mail address by visiting the link we sent to you.").show()
+                        onLoginFailed()
+                    } else if (error == null && token?.message != "Bad Request") {
+
                         val sharedPref = getSharedPreferences(getString(R.string.settings_file), Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
                         editor.putString(getString(R.string.token_key), token?.jwt)
                         editor.putString(getString(R.string.uid_key), token?.user?.id)
                         editor.putString(getString(R.string.uname_key), token?.user?.name)
+                        if(token?.user?.events!!.isNotEmpty()) {
+                            token.user.events.forEach { e ->
+                                database.use {
+                                    insert(
+                                            io.github.dsouzadyn.evently.models.Event.TABLE_NAME,
+                                            io.github.dsouzadyn.evently.models.Event.COLUMN_ID to e.id,
+                                            io.github.dsouzadyn.evently.models.Event.COLUMN_NAME to e.name,
+                                            io.github.dsouzadyn.evently.models.Event.COLUMN_PRICE to e.price,
+                                            io.github.dsouzadyn.evently.models.Event.COLUMN_UID to token.user.id,
+                                            io.github.dsouzadyn.evently.models.Event.COLUMN_LOCATION to e.location
+                                    )
+                                }
+                            }
+                        }
                         if(token?.user?.confirmed!!)
                             editor.putString(getString(R.string.conf_key), "CONF")
                         editor.putInt(getString(R.string.urole_key), token?.user?.role!!)

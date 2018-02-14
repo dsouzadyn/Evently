@@ -36,7 +36,7 @@
 
     <string name="toast_login_failed">Something went wrong!</string>
 
-    <string name="hint_email">john@example.com</string>
+    <string name="hint_email">Enter a valid email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Name</string>
     <string name="hint_roll_no">Roll Number</string>
@@ -48,9 +48,10 @@
     <string-array name="branch_array">
         <item>Computer Engineering</item>
         <item>Mechanical Engineering</item>
-        <item>Eelectrical Engineering</item>
+        <item>Electrical Engineering</item>
         <item>IT Engineering</item>
         <item>EXTC Engineering</item>
+        <item>Other</item>
     </string-array>
     <string name="semester_prompt">Select your semester</string>
     <string-array name="semester_array">
@@ -62,6 +63,7 @@
     <string name="college_prompt">Select your college</string>
     <string-array name="college_array">
         <item>FCRIT</item>
+        <item>Other</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
